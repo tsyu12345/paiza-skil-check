@@ -4,20 +4,28 @@ process.stdin.setEncoding('utf8');
 function calc_tax(income) {
     let tax = 0;
     let tax_rate;
-    let over_income = false;
-    
+    //let over_income = false;
+    let remain_income = income - 750000;
     if(income <= 100000) {
         tax = 0;
         return tax;
     }
-    if(income-750000 > 0) {
-        over_income = true;
-    }
-    tax_rate = 0.1;
-    tax += parseInt(750000 * tax_rate);
-    if(over_income) {
+    if(income > 750000) {
+        tax_rate = 0.1;
+        tax += parseInt(750000 * tax_rate);
         tax_rate = 0.2;
-        tax += parseInt((income - 750000) * tax_rate);
+        tax += parseInt(remain_income * tax_rate);
+    } else if(income > 1500001) {
+        tax_rate = 0.1;
+        tax += parseInt(750000 * tax_rate);
+        tax_rate = 0.2;
+        tax += parseInt(remain_income * tax_rate);
+        tax_rate = 0.4;
+        remain_income = 1500001 - (income-750000);
+        tax += parseInt(remain_income * tax_rate)
+    } else {
+        tax_rate = 0.1;
+        tax += parseInt(income * tax_rate);
     }
     return tax;
 }
